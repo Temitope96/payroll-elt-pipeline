@@ -1,0 +1,26 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Data files (too large for GitHub)
+data/*.csv
+
+# Airflow
+logs/
+airflow.db
+standalone_admin_password.txt
+
+# dbt
+dbt/payroll_dbt/target/
+dbt/payroll_dbt/dbt_packages/
+dbt/payroll_dbt/logs/
+
+# dbt credentials (never commit this)
+profiles.yml
+~/.dbt/
+
+# Docker
+.docker/
