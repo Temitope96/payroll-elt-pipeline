@@ -25,7 +25,7 @@ def generate_employees(n=500):
             "employee_id": f"EMP{i:05d}",
             "first_name": fake.first_name(),
             "last_name": fake.last_name(),
-            "email": f"{fake.user_name()}_{i}@{fake.domain_name()}",
+            "email": f"{fake.user_name()}_{i}@{fake.domain_name()}", # to ensure all emails are unique
             "country_code": country,
             "department": random.choice(DEPARTMENTS),
             "hire_date": fake.date_between(start_date="-5y", end_date="today"),
