@@ -62,7 +62,8 @@ with DAG(
             [sys.executable, "/opt/airflow/ingestion/load_to_postgres.py"],
             capture_output=True,
             text=True,
-            env={**os.environ, "DATA_OUTPUT_DIR": "/opt/airflow/data"}
+            env={**os.environ, "DATA_OUTPUT_DIR": "/opt/airflow/data",
+                 "DB_HOST": "postgres"}
         )
         print("STDOUT:", result.stdout)
         print("STDERR:", result.stderr)

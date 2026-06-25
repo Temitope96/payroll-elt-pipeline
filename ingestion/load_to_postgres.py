@@ -4,7 +4,11 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 import os
 
-DB_CONN = "postgresql://airflow:airflow@postgres:5432/airflow"
+# Lets use 'localhost' when running locally, and 'postgres' when run inside Docker
+
+DB_HOST = os.environ.get("DB_HOST", "localhost")
+DB_CONN = f"postgresql://airflow:airflow@{DB_HOST}:5432/airflow"
+# DB_CONN = "postgresql://airflow:airflow@postgres:5432/airflow"
 
 def get_engine():
     return create_engine(DB_CONN)
@@ -62,6 +66,15 @@ def create_staging_schema(engine):
 
 def load_csv(filepath, table_name, engine):
     df = pd.read_csv(filepath)
+
+    # Add _loaded_at metadata column
+    from datetime import datetime
+    df['_loaded_at'] = datetime.utcnow()
+
+    # Drop with CASCADE first to remove dependent views
+    with engine.begin() as conn:
+        conn.execute(text(f"DROP TABLE IF EXISTS staging.{table_name} CASCADE"))
+
     df.to_sql(
         table_name,
         engine,
