@@ -87,8 +87,17 @@ with DAG(
 
     task_dbt = BashOperator(
         task_id="trigger_dbt_run",
-        bash_command="echo 'dbt step — coming soon'",
+        bash_command="""
+            cd /opt/airflow/dbt/payroll_dbt && \
+            dbt run --profiles-dir /home/airflow/.dbt && \
+            dbt test --profiles-dir /home/airflow/.dbt
+        """,
     )
+
+    # task_dbt = BashOperator(
+    #     task_id="trigger_dbt_run",
+    #     bash_command="echo 'dbt step — coming soon'",
+    # )
 
     task_ingest >> task_validate >> task_load >> task_dbt
 
